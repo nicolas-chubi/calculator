@@ -1,51 +1,95 @@
 body {
-    background-color: #4f88b9; /* Color suave */
-    text-align: center;
-    font-family: Arial, sans-serif;
-  }
+  font-family: Arial, sans-serif;
+  background-color: #ffe3b3; /* color1 */
+  color: #3d2922; /* color5 */
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  transition: background-color 0.3s ease; /* Transición para el cambio de color */
+}
 
-  .container {
-    background-color: #6381ce;
-    border-radius: 25px;
-    padding: 20px;
-    margin: 20px;
-    display: inline-block;
-  }
+.btn-action:hover {
+  background-color: #ff5252; /* color3 */
+}
 
-  .money-buttons img {
-    margin: 10px;
-    width: 150px;
-    height: auto;
-    cursor: pointer;
-    transition: transform 0.3s;
-  }
+.container {
+  width: 90%;
+  max-width: 600px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+}
 
-  .money-buttons img:hover {
-    transform: scale(1.1);
-  }
+.total-display {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  background-color: #ff9a52; /* color2 */
+  padding: 20px;
+  border-radius: 10px;
+  color: #fff;
+}
 
-  .total-display {
-    font-size: 3em;
-    padding: 20px;
-    border-radius: 20px;
-    background-color: #a46a6a;
-    width: 100%;
-    margin-bottom: 20px;
-  }
+.money-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
 
-  .btn-action {
-    background-color: #a52a2a;
-    color: white;
-    padding: 10px;
-    font-size: 2em;
-    margin: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-  }
+.money-button {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
 
-  .btn-action:hover {
-    background-color: #800000;
-  }
+.money-button img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
 
-  
+.money-button:hover {
+  transform: scale(1.05);
+}
+
+.money-button.restar {
+  filter: grayscale(15%) brightness(80%);
+}
+
+.counter {
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 50%;
+  font-size: 0.9em;
+}
+
+.btn-action {
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: #c91e5a; /* color4 */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-action:hover {
+  background-color: #ff5252; /* color3 */
+}
+
+.historial-display {
+  margin-top: 20px;
+}
+
 
