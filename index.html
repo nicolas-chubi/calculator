@@ -13,13 +13,34 @@
         </div>
 
         <div class="money-buttons">
-            <img src="img/mil_pesos.png" alt="Billete de 1000" class="money-button" onclick="manejarMonto(1000)">
-            <img src="img/500_pesos.png" alt="Billete de 500" class="money-button" onclick="manejarMonto(500)">
-            <img src="img/200_pesos.png" alt="Billete de 200" class="money-button" onclick="manejarMonto(200)">
-            <img src="img/100_pesos.png" alt="Billete de 100" class="money-button" onclick="manejarMonto(100)">
-            <img src="img/50_pesos.png" alt="Billete de 50" class="money-button" onclick="manejarMonto(50)">
-            <img src="img/20_pesos.png" alt="Billete de 20" class="money-button" onclick="manejarMonto(20)">
-            <img src="img/10_pesos.png" alt="Billete de 10" class="money-button" onclick="manejarMonto(10)">
+            <div class="money-button" onclick="manejarMonto(1000, 'mil')">
+                <img src="img/mil_pesos.png" alt="Billete de 1000">
+                <div class="counter" id="mil-counter">0</div>
+            </div>
+            <div class="money-button" onclick="manejarMonto(500, 'quinientos')">
+                <img src="img/500_pesos.png" alt="Billete de 500">
+                <div class="counter" id="quinientos-counter">0</div>
+            </div>
+            <div class="money-button" onclick="manejarMonto(200, 'doscientos')">
+                <img src="img/200_pesos.png" alt="Billete de 200">
+                <div class="counter" id="doscientos-counter">0</div>
+            </div>
+            <div class="money-button" onclick="manejarMonto(100, 'cien')">
+                <img src="img/100_pesos.png" alt="Billete de 100">
+                <div class="counter" id="cien-counter">0</div>
+            </div>
+            <div class="money-button" onclick="manejarMonto(50, 'cincuenta')">
+                <img src="img/50_pesos.png" alt="Billete de 50">
+                <div class="counter" id="cincuenta-counter">0</div>
+            </div>
+            <div class="money-button" onclick="manejarMonto(20, 'veinte')">
+                <img src="img/20_pesos.png" alt="Billete de 20">
+                <div class="counter" id="veinte-counter">0</div>
+            </div>
+            <div class="money-button" onclick="manejarMonto(10, 'diez')">
+                <img src="img/10_pesos.png" alt="Billete de 10">
+                <div class="counter" id="diez-counter">0</div>
+            </div>
         </div>
 
         <div>
@@ -36,60 +57,105 @@
     <script>
         let total = 0;
         let restarModo = false;
+        let contadorBilletes = {
+            mil: 0,
+            quinientos: 0,
+            doscientos: 0,
+            cien: 0,
+            cincuenta: 0,
+            veinte: 0,
+            diez: 0
+        };
 
         // Función para manejar la suma/resta de montos
-        function manejarMonto(monto) {
+        function manejarMonto(monto, tipo) {
             if (restarModo) {
                 total -= monto;
                 if (total < 0) {
                     total = 0; // Evitar que sea negativo
                 }
+                contadorBilletes[tipo]--;
+                if (contadorBilletes[tipo] < 0) contadorBilletes[tipo] = 0;
             } else {
                 total += monto;
+                contadorBilletes[tipo]++;
             }
             // Actualizar el texto del total
             document.getElementById('total').innerText = total;
+            // Actualizar el contador del billete
+            document.getElementById(`${tipo}-counter`).innerText = contadorBilletes[tipo];
         }
 
         // Función para reiniciar el monto
         function resetMonto() {
             total = 0;
             document.getElementById('total').innerText = total;
+            for (let tipo in contadorBilletes) {
+                contadorBilletes[tipo] = 0;
+                document.getElementById(`${tipo}-counter`).innerText = 0;
+            }
         }
 
         // Función para activar/desactivar el modo restar
         function toggleSubtractMode() {
             restarModo = !restarModo;
-            // Cambiar el color de los billetes cuando esté en modo restar
-            const billetes = document.querySelectorAll('.money-button');
-            billetes.forEach(billete => {
-                billete.style.filter = restarModo ? 'hue-rotate(180deg)' : 'none';
-            });
         }
 
-        // Función para guardar el monto actual con fecha y hora en LocalStorage
+        // Función para guardar el monto actual en LocalStorage
         function guardarMonto() {
-            const fechaHora = new Date().toLocaleString(); // Obtiene la fecha y hora actual en formato local
-            let historial = JSON.parse(localStorage.getItem('historial')) || [];
-            historial.push({ monto: total, fechaHora: fechaHora });
-            localStorage.setItem('historial', JSON.stringify(historial));
-            alert(`Monto guardado: $${total} en ${fechaHora}`);
-        }
+    let historial = JSON.parse(localStorage.getItem('historial')) || [];
+    
+    // Obtener la fecha y hora actual
+    let fechaActual = new Date();
+    let fecha = fechaActual.toLocaleDateString();
+    let hora = fechaActual.toLocaleTimeString();
+    
+    // Guardar el monto junto con la fecha y hora
+    historial.push({
+        monto: total,
+        fecha: fecha,
+        hora: hora
+    });
+    
+    localStorage.setItem('historial', JSON.stringify(historial));
+    alert(`Monto guardado: $${total} el ${fecha} a las ${hora}`);
+    
+    resetMonto();  // Resetear los contadores después de guardar
+}
+
 
         // Función para mostrar el historial de montos guardados
         function mostrarHistorial() {
-            let historial = JSON.parse(localStorage.getItem('historial')) || [];
-            let historialDiv = document.getElementById('historial');
-            historialDiv.innerHTML = '<h3>Historial de Montos Guardados:</h3>';
-            if (historial.length === 0) {
-                historialDiv.innerHTML += '<p>No hay montos guardados.</p>';
-            } else {
-                historial.forEach((entrada, index) => {
-                    historialDiv.innerHTML += `<p>${index + 1}: $${entrada.monto} (Guardado en ${entrada.fechaHora})</p>`;
-                });
-            }
-        }
+    let historial = JSON.parse(localStorage.getItem('historial')) || [];
+    let historialDiv = document.getElementById('historial');
+    historialDiv.innerHTML = '<h3>Historial de Montos Guardados:</h3>';
+    
+    if (historial.length === 0) {
+        historialDiv.innerHTML += '<p>No hay montos guardados.</p>';
+    } else {
+        historial.forEach((item, index) => {
+            historialDiv.innerHTML += `<p>${index + 1}: $${item.monto} - ${item.fecha} ${item.hora}</p>`;
+        });
+    }
+}
+
+        function toggleSubtractMode() {
+    restarModo = !restarModo;
+    // Cambiar el color de fondo en el modo restar
+    if (restarModo) {
+        document.body.style.backgroundColor = '#ffd080';  // color3
+        document.querySelectorAll('.money-button').forEach(billete => {
+            billete.classList.add('restar');  // Agregar clase para el modo restar
+        });
+    } else {
+        document.body.style.backgroundColor = '#ffe3b3';  // color1
+        document.querySelectorAll('.money-button').forEach(billete => {
+            billete.classList.remove('restar');  // Quitar clase cuando no está en modo restar
+        });
+    }
+}
     </script>
 </body>
+</html>
 </html>
 
