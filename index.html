@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador de Propinas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="total-display">
+            $<span id="total">0</span>
+        </div>
+
+        <div class="money-buttons">
+            <img src="img/mil_pesos.png" alt="Billete de 1000" class="money-button" onclick="manejarMonto(1000)">
+            <img src="img/500_pesos.png" alt="Billete de 500" class="money-button" onclick="manejarMonto(500)">
+            <img src="img/200_pesos.png" alt="Billete de 200" class="money-button" onclick="manejarMonto(200)">
+            <img src="img/100_pesos.png" alt="Billete de 100" class="money-button" onclick="manejarMonto(100)">
+            <img src="img/50_pesos.png" alt="Billete de 50" class="money-button" onclick="manejarMonto(50)">
+            <img src="img/20_pesos.png" alt="Billete de 20" class="money-button" onclick="manejarMonto(20)">
+            <img src="img/10_pesos.png" alt="Billete de 10" class="money-button" onclick="manejarMonto(10)">
+        </div>
+
+        <div>
+            <button class="btn-action" onclick="resetMonto()">Reset</button>
+            <button class="btn-action" onclick="toggleSubtractMode()">Activar/Desactivar Modo Restar</button>
+            <button class="btn-action" onclick="guardarMonto()">Guardar Monto</button>
+            <button class="btn-action" onclick="mostrarHistorial()">Ver Historial</button>
+        </div>
+
+        <!-- Div donde se mostrará el historial -->
+        <div id="historial" class="historial-display"></div>
+    </div>
+
+    <script>
+        let total = 0;
+        let restarModo = false;
+
+        // Función para manejar la suma/resta de montos
+        function manejarMonto(monto) {
+            if (restarModo) {
+                total -= monto;
+                if (total < 0) {
+                    total = 0; // Evitar que sea negativo
+                }
+            } else {
+                total += monto;
+            }
+            // Actualizar el texto del total
+            document.getElementById('total').innerText = total;
+        }
+
+        // Función para reiniciar el monto
+        function resetMonto() {
+            total = 0;
+            document.getElementById('total').innerText = total;
+        }
+
+        // Función para activar/desactivar el modo restar
+        function toggleSubtractMode() {
+            restarModo = !restarModo;
+            // Cambiar el color de los billetes cuando esté en modo restar
+            const billetes = document.querySelectorAll('.money-button');
+            billetes.forEach(billete => {
+                billete.style.filter = restarModo ? 'hue-rotate(180deg)' : 'none';
+            });
+        }
+
+        // Función para guardar el monto actual con fecha y hora en LocalStorage
+        function guardarMonto() {
+            const fechaHora = new Date().toLocaleString(); // Obtiene la fecha y hora actual en formato local
+            let historial = JSON.parse(localStorage.getItem('historial')) || [];
+            historial.push({ monto: total, fechaHora: fechaHora });
+            localStorage.setItem('historial', JSON.stringify(historial));
+            alert(`Monto guardado: $${total} en ${fechaHora}`);
+        }
+
+        // Función para mostrar el historial de montos guardados
+        function mostrarHistorial() {
+            let historial = JSON.parse(localStorage.getItem('historial')) || [];
+            let historialDiv = document.getElementById('historial');
+            historialDiv.innerHTML = '<h3>Historial de Montos Guardados:</h3>';
+            if (historial.length === 0) {
+                historialDiv.innerHTML += '<p>No hay montos guardados.</p>';
+            } else {
+                historial.forEach((entrada, index) => {
+                    historialDiv.innerHTML += `<p>${index + 1}: $${entrada.monto} (Guardado en ${entrada.fechaHora})</p>`;
+                });
+            }
+        }
+    </script>
+</body>
+</html>
+

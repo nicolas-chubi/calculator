@@ -1,0 +1,51 @@
+body {
+    background-color: #4f88b9; /* Color suave */
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+
+  .container {
+    background-color: #6381ce;
+    border-radius: 25px;
+    padding: 20px;
+    margin: 20px;
+    display: inline-block;
+  }
+
+  .money-buttons img {
+    margin: 10px;
+    width: 150px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  .money-buttons img:hover {
+    transform: scale(1.1);
+  }
+
+  .total-display {
+    font-size: 3em;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: #a46a6a;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .btn-action {
+    background-color: #a52a2a;
+    color: white;
+    padding: 10px;
+    font-size: 2em;
+    margin: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .btn-action:hover {
+    background-color: #800000;
+  }
+
+  
+
